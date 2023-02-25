@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--根节点外部容器-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+    <!--上面是设置属性，xmlns：告诉你可以使用那些合法属性
+    线性布局
+    width：设置宽，math_parent填充副容器，和外部的宽和高相同
+    height：设置高
+    orientation:设置方向，垂直方向（默认）
+    gravity 将文字居中
+    -->
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello world"
+        />
+<!--上面是叶子节点
+宽高包裹内容
+text：输出文本，helloworld
+以上创建于一个文本空间
+-->
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="跳转"
+        />
+    <!--在第一个界面设置按钮，点击该按钮跳转-->
+</LinearLayout>

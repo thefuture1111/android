@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="text2">立刻有lzj</string>
+</resources>
