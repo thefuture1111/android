@@ -1,0 +1,162 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class english {
+    public static void main(String []srgs){
+
+        File file = new File("C:\\Users\\DELL\\Desktop\\资料\\JAVA TWO\\input.txt");
+        System.out.println("判断文件格式是否正确：");
+        if(file.exists() && file.length() == 0) {
+            System.out.println("  文件为空！");
+            System.exit(0);
+        } else if(oneWord()){
+            System.out.println("  文件只有一個單詞！");
+            System.exit(0);
+        }else{
+            System.out.println("  文件内容有效。");
+            achieve();
+        }
+    }
+    public static boolean oneWord(){
+        ArrayList<String> list = new ArrayList<String>();
+        String pathname = "C:\\Users\\DELL\\Desktop\\资料\\JAVA TWO\\input.txt";
+        int i = 0;
+        try (
+                FileReader reader = new FileReader(pathname);
+                BufferedReader br = new BufferedReader(reader)
+                // 建立一个对象，它把文件内容转成计算机能读懂的语言
+        ) {
+            String line;
+            //网友推荐更加简洁的写法
+            while ((line = br.readLine()) != null) {
+                // 一次读入一行数据
+                list.add(line);
+                i++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(i<=1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /*
+     * 获取单词首尾字母的方法
+     */
+    public static void print(){
+        String a = "sadfg";
+        System.out.println(a.substring(0,1));//获取首字母
+        System.out.println(a.substring(a.length()-1,a.length()));//获取尾字母
+    }
+
+
+    /*
+     * 读取txt文件，并且存到ArrayList集合中,找出接龙单词 存入ArrayList1集合，
+     * 把ArrayList1集合写入output1文件
+     */
+    public static void achieve() {
+        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list1 = new ArrayList<String>();//存储遍历结果
+
+        String pathname = "C:\\Users\\DELL\\Desktop\\资料\\JAVA TWO\\input.txt"; // 绝对路径或相对路径都可以，写入文件时演示相对路径,读取以上路径的input.txt文件
+        String writename = "C:\\Users\\DELL\\Desktop\\资料\\JAVA TWO\\output.txt";
+        //防止文件建立或读取失败，用catch捕捉错误并打印，也可以throw;
+        //不关闭文件会导致资源的泄露，读写文件都同理
+        //Java7的try-with-resources可以优雅关闭文件，异常时自动关闭文件；详细解读https://stackoverflow.com/a/12665271
+        try (FileReader reader = new FileReader(pathname);
+             BufferedReader br = new BufferedReader(reader); // 建立一个对象，它把文件内容转成计算机能读懂的语言
+             FileWriter writer = new FileWriter(writename);
+             BufferedWriter out = new BufferedWriter(writer)
+        ) {
+            String line;
+            //网友推荐更加简洁的写法
+//            System.out.println("遍历readline");
+            while ((line = br.readLine()) != null) {
+                // 一次读入一行数据
+//                System.out.println(line);
+                list.add(line);
+            }
+            System.out.println("遍历所有单词集合（arraylist）：");
+            for (int i = 0; i < list.size(); i++) {
+                System.out.println(list.get(i));
+            }
+
+
+            String word0 = list.get(0);
+            list1.add(word0);
+            String word = " ";//用来存储单词
+            for(int j = 1;j < list.size();j++){
+                word = list.get(j);
+                if(word.substring(0,1).equals(word0.substring(word0.length()-1,word0.length())) )
+                //不能用“==”判断字符串的等价，要用equals!!!!!!!!!!!!!!!!!!!!!!!!
+                {
+                    list1.add(word);
+                    word0 = word;
+                }
+            }
+            //打印list1
+            System.out.println("遍历list1");
+            //把list1中的结果写入output1.txt文件
+            for (int g = 0; g < list1.size(); g++){
+                System.out.println(list1.get(g));
+                out.write(list1.get(g));
+                out.write(" ");
+            }
+
+            System.out.println("程序结束！");
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     * txt文件的读取
+     */
+    public static void readFile() {
+        String pathname = "input.txt";
+        //不关闭文件会导致资源的泄露，读写文件都同理
+        //Java7的try-with-resources可以优雅关闭文件，异常时自动关闭文件；详细解读https://stackoverflow.com/a/12665271
+        try (FileReader reader = new FileReader(pathname);
+             BufferedReader br = new BufferedReader(reader) // 建立一个对象，它把文件内容转成计算机能读懂的语言
+        ) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // 一次读入一行数据
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     *txt文件的写入
+     */
+    public static void writeFile() {
+        try {
+            File writeName = new File("C:\\Users\\DELL\\Desktop\\资料\\JAVA TWO\\output.txt");
+            writeName.createNewFile(); //创建新文件,有同名的文件的话直接覆盖
+            try (
+                    FileWriter writer = new FileWriter(writeName);
+                    BufferedWriter out = new BufferedWriter(writer)
+            ) {
+                out.write("我会写入文件啦！\r\n"); // \r\n为换行
+                out.flush(); // 把缓存区内容压入文件
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+}

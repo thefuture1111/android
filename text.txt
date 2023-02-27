@@ -1,0 +1,67 @@
+package Dutils;
+
+import Bean.Brand;
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+
+import javax.sql.DataSource;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+//品牌数据的增删改查操作
+public class text {
+    /**
+     * 查询所有
+     * 1.sql: select *from tb_brand;
+     * 2.参数设置
+     * 3.结果：List<brand>
+     */
+    public void TextSelectall() throws Exception {
+        //1.获取connect，调用druid连接池
+        Properties prop = new Properties();
+        prop.load(new FileInputStream("src/druid.properties"));
+        DataSource dataSource = DruidDataSourceFactory.createDataSource(prop);
+        Connection conn = dataSource.getConnection();
+        //2.定义sql语句
+        String sql = "select *from tb_brand";
+        //3.获取pstmt对象
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        //4.设置参数
+                    //查询全部内容不需要设置参数
+        //5.执行SQL
+        ResultSet rs = pstmt.executeQuery();
+        //6.处理结果List<brand> 封装brand,并且把它装载到list这个集合里面去
+        Brand brand = null;
+        List<Brand> brands = new ArrayList<>();
+        while(rs.next()){
+            //获取数据
+            int Id = rs.getInt("id");
+            String BrandName = rs.getString("brand_name");
+            String CompanyName = rs.getString("company_name");
+            String Ordered = rs.getString("ordered");
+            String Description = rs.getString("description");
+            int Status = rs.getInt("status");
+            //封装Brand
+             brand = new Brand();
+            brand.setId(Id);
+            brand.setBrand_name(BrandName);
+            brand.setCompany_name(CompanyName);
+            brand.setOrdered(Ordered);
+            brand.setDescription(Description);
+            brand.setStatus(Status);
+
+            //装载集合
+            brands.add(brand);
+        }
+        System.out.println(brands);
+        //7.释放资源
+        rs.close();
+        pstmt.close();
+        conn.close();
+    }
+}
